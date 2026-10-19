@@ -1,82 +1,110 @@
-# fastapi-data-ingestion
+<div align="center">
+  <!-- Ícone representativo de API/Dados -->
+  <img src="https://img.icons8.com/fluency/96/000000/api-settings.png" alt="Ícone de API" width="80"/>
+  
+  <h1>FastAPI: Ingestão de Dados & Data Quality</h1>
 
-Pipeline de Mini-ETL local e leve construído com FastAPI, Pandas e Pydantic para validação estrita e ingestão de dados em SQLite.
+  <p>
+    <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+    <img src="https://img.shields.io/badge/FastAPI-API_REST-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+    <img src="https://img.shields.io/badge/Pandas-Data_Cleaning-150458?style=for-the-badge&logo=pandas&logoColor=white" alt="Pandas">
+    <img src="https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite">
+  </p>
 
-## 📌 Sobre o Projeto
+  <p><em>Pipeline de Mini-ETL local e leve construído para validação estrita e ingestão automatizada de dados.</em></p>
+</div>
 
-Este projeto consiste em uma API desenvolvida para automatizar a **ingestão, validação e higienização de dados cadastrais em lote**.
+<br>
 
-O objetivo principal é substituir processos manuais de importação de planilhas, garantindo a integridade e a qualidade dos dados (*Data Quality*) antes que eles entrem no banco de dados da empresa. A API recebe arquivos brutos, processa em memória, aplica rigorosas regras de negócio e consolida as informações.
+<h2>Sobre o Projeto</h2>
+<p>
+  Este projeto consiste em uma <b>API RESTful</b> desenvolvida em Python para automatizar a ingestão, validação e higienização de dados cadastrais em lote. O objetivo principal é substituir processos manuais e falhos de importação de planilhas por um fluxo programático seguro.
+</p>
+<p>
+  A API recebe arquivos brutos (CSV ou Excel), processa tudo em memória com <b>Pandas</b> para tratar anomalias estruturais, aplica rigorosas regras de negócio com <b>Pydantic</b> (como adequação matemática e de tamanho de CPFs/CNPJs) e salva os registros válidos em um banco de dados relacional (SQLite via <b>SQLAlchemy</b>). Tudo isso garantindo o conceito de <i>Data Quality</i> antes que os dados sujem o ecossistema da empresa.
+</p>
 
-## 🛠️ Tecnologias Utilizadas
+<br>
 
-* **FastAPI:** Framework web moderno e de alta performance para construção da API.
-* **Pandas:** Utilizado para a manipulação e limpeza estrutural das planilhas em memória.
-* **Pydantic:** Responsável pela validação de dados e garantia de tipagem (ex: verificação de integridade de CPFs/CNPJs).
-* **SQLAlchemy:** ORM (Object Relational Mapper) utilizado para a modelagem e persistência dos dados.
-* **SQLite:** Banco de dados relacional leve e autossuficiente para armazenamento local.
+<h2> Principais Funcionalidades</h2>
 
-## ✨ Principais Funcionalidades
+<table>
+  <tr>
+    <td width="200"><b>Upload Flexível</b></td>
+    <td>Suporte nativo para ingestão via endpoints <code>POST</code> de arquivos estruturados nos formatos <code>.csv</code> e <code>.xlsx</code>.</td>
+  </tr>
+  <tr>
+    <td><b>Data Cleansing</b></td>
+    <td>Tratamento inteligente em memória com Pandas: remove artefatos gerados pelo Excel, lida com dados ausentes (NaN) e preserva zeros à esquerda.</td>
+  </tr>
+  <tr>
+    <td><b>Validação Inteligente</b></td>
+    <td>Verificação granular linha a linha com Pydantic, garantindo que documentos e nomes cumpram as exigências do banco de dados antes da inserção.</td>
+  </tr>
+  <tr>
+    <td><b>Controle de Duplicidade</b></td>
+    <td>Mecanismo preventivo no ORM SQLAlchemy contra a inserção de cadastros com CPFs ou CNPJs já existentes na base.</td>
+  </tr>
+  <tr>
+    <td><b>Feedback Estruturado</b></td>
+    <td>Retorno rápido em JSON contendo métricas do processamento (sucessos vs. falhas) e mapeamento exato da linha e motivo de cada erro.</td>
+  </tr>
+</table>
 
-1. **Upload Flexível:** Suporte nativo para ingestão de arquivos `.csv` e `.xlsx`.
-2. **Data Cleansing:** Tratamento inteligente de dados ausentes (NaN) e padronização de formatação proveniente de artefatos do Excel.
-3. **Validação Inteligente:** Checagem de regras de negócio, como a consistência matemática e tamanho de documentos de identificação.
-4. **Controle de Duplicidade:** Mecanismo preventivo contra a inserção de cadastros duplicados no banco de dados.
-5. **Feedback Detalhado:** Retorno estruturado em JSON contendo o status do processamento, número de sucessos e o mapeamento de erros por linha.
+<br>
 
-## ⚙️ Como Executar Localmente
+<h2>📂 Arquitetura do Sistema</h2>
 
-### 1. Pré-requisitos
+<details>
+  <summary><b>Clique para visualizar a estrutura do projeto</b></summary>
+  <br>
+  
+  ```text
+  ├── main.py               # Script centralizado: Rotas FastAPI, Data Cleaning (Pandas) e ORM
+  ├── mini_etl.db           # Banco de dados SQLite autogerado na primeira execução
+  ├── requirements.txt      # Mapeamento de dependências (FastAPI, Pandas, Pydantic, SQLAlchemy)
+  └── README.md             # Documentação e manual de uso do projeto
+  ```
+</details>
 
-* Python 3.9+ instalado na máquina.
-* Gerenciador de pacotes `pip`.
+<br>
 
-### 2. Passo a Passo
+<h2>⚙️ Como Executar Localmente</h2>
 
-Clone este repositório:
+<p>Siga os passos abaixo para rodar a API em sua máquina local:</p>
 
 ```bash
+# 1. Clone este repositório
 git clone https://github.com/MarieleV/fastapi-data-ingestion.git
 cd fastapi-data-ingestion
-```
 
-Crie e ative um ambiente virtual (recomendado):
-
-```bash
-# No Windows:
+# 2. Crie e ative um ambiente virtual
 python -m venv venv
-.\venv\Scripts\Activate.ps1
+.\venv\Scripts\Activate.ps1   # No Windows
+# source venv/bin/activate    # No Linux/Mac
 
-# No Linux/Mac:
-python3 -m venv venv
-source venv/bin/activate
-```
-
-Instale as dependências do projeto:
-
-```bash
+# 3. Instale as dependências listadas
 pip install fastapi uvicorn pandas pydantic sqlalchemy python-multipart openpyxl
-```
 
-Inicie o servidor de desenvolvimento:
-
-```bash
+# 4. Inicie o servidor de desenvolvimento
 uvicorn main:app --reload --port 8080
 ```
 
-## 📖 Documentação da API
+<br>
 
-Com a aplicação rodando, você pode acessar a documentação interativa autogerada pelo FastAPI:
+<h2>📖 Documentação da API (Swagger)</h2>
+<p>
+  Com a aplicação rodando, acesse a documentação interativa autogerada no seu navegador para testar o upload de planilhas na prática: <br>
+  👉 <a href="http://127.0.0.1:8080/docs">http://127.0.0.1:8080/docs</a>
+</p>
 
-* **Swagger UI:** [http://127.0.0.1:8080/docs](http://127.0.0.1:8080/docs) (Ideal para testar o upload de arquivos na prática).
-* **ReDoc:** [http://127.0.0.1:8080/redoc](http://127.0.0.1:8080/redoc) (Ideal para leitura fluida das regras e esquemas da API).
+<br>
 
-## 👩‍💻 Autora
-
-**Mariele Vieira da Silva**
-
-*Estudante de Engenharia de Software | Engenharia de Dados, Cloud e IA*
-
-* [LinkedIn](https://www.linkedin.com/in//mariele-vieira-8698091b7)
-* [GitHub](https://github.com/MarieleV)
-* Contato: silvamariele797@gmail.com
+<h2>👩‍💻 Autora</h2>
+<p>
+  <b>Mariele Vieira da Silva</b><br>
+  <i>Estudante de Engenharia de Software | Engenharia de Dados, Cloud e IA</i><br><br>
+  <a href="https://www.linkedin.com/in//mariele-vieira-8698091b7">LinkedIn</a> | 
+  <a href="https://github.com/MarieleV">GitHub</a> | 
+  ✉️ silvamariele797@gmail.com
+</p>
