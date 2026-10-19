@@ -100,11 +100,3 @@ uvicorn main:app --reload --port 8080
 
 <br>
 
-<h2>👩‍💻 Autora</h2>
-<p>
-  <b>Mariele Vieira da Silva</b><br>
-  <i>Estudante de Engenharia de Software | Engenharia de Dados, Cloud e IA</i><br><br>
-  <a href="https://www.linkedin.com/in//mariele-vieira-8698091b7">LinkedIn</a> | 
-  <a href="https://github.com/MarieleV">GitHub</a> | 
-  ✉️ silvamariele797@gmail.com
-</p>
