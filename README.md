@@ -16,7 +16,7 @@
 
 <br>
 
-<h2>Sobre o Projeto</h2>
+<h2>Descritivo:</h2>
 <p>
   Este projeto consiste em uma <b>API RESTful</b> desenvolvida em Python para automatizar a ingestão, validação e higienização de dados cadastrais em lote. O objetivo principal é substituir processos manuais e falhos de importação de planilhas por um fluxo programático seguro.
 </p>
