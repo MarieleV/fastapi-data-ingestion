@@ -29,10 +29,21 @@ class ClienteSchema(BaseModel):
 
     @field_validator('cpf_cnpj')
     def validar_documento(cls, v):
-        # Remove caracteres especiais
-        doc = ''.join(filter(str.isdigit, str(v)))
+        # Transforma em string e remove um eventual ".0" decimal gerado pelo Pandas
+        v_str = str(v).split('.')[0]
+        
+        # Mantém apenas os dígitos numéricos
+        doc = ''.join(filter(str.isdigit, v_str))
+        
+        # Recoloca o zero à esquerda caso o Excel tenha apagado
+        if len(doc) == 10:
+            doc = doc.zfill(11) # Preenche até 11 dígitos
+        elif len(doc) == 13:
+            doc = doc.zfill(14) # Preenche até 14 dígitos
+            
         if len(doc) not in [11, 14]:
-            raise ValueError('O documento deve ter 11 (CPF) ou 14 (CNPJ) dígitos válidos')
+            raise ValueError(f'Tamanho inválido. Após processamento, o documento ficou com {len(doc)} dígitos: {doc}')
+        
         return doc
 
 # --- Aplicação FastAPI ---
