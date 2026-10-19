@@ -46,13 +46,35 @@ class ClienteSchema(BaseModel):
         
         return doc
 
-# --- Aplicação FastAPI ---
+# --- Configuração da Documentação (Swagger UI) ---
+descricao_api = """
+Esta API foi desenvolvida para automatizar a **ingestão, validação e higienização** de dados cadastrais em lote. 
+
+Ideal para substituir processos manuais em planilhas, garantindo a integridade e qualidade dos dados (Data Quality) antes de entrarem no banco de dados da empresa.
+
+### Principais Funcionalidades:
+* **Upload de Lotes:** Aceita arquivos estáticos nos formatos `.csv` e `.xlsx`.
+* **Validação Inteligente:** Aplica regras de negócio para checar formatação e consistência matemática de CPFs e CNPJs.
+* **Controle de Duplicidade:** Evita o cadastro duplicado de documentos já existentes na base.
+"""
+
 app = FastAPI(
-    title="Mini-ETL API", 
-    description="API para ingestão e validação de dados de clientes em lote"
+    title="Mini-ETL API | Portfólio de Engenharia de Dados",
+    description=descricao_api,
+    version="1.0.0",
+    contact={
+        "name": "Mariele Vieira da Silva",
+        "url": "https://github.com/MarieleV",
+        "email": "silvamariele797@gmail.com",
+    }
 )
 
-@app.post("/batches/upload")
+@app.post(
+    "/batches/upload", 
+    tags=["Ingestão de Dados"], 
+    summary="Processar planilha de clientes",
+    description="Recebe um arquivo CSV ou Excel, processa os dados em memória com Pandas, aplica as validações do Pydantic e salva os registros válidos no banco SQLite."
+)
 async def upload_arquivo(file: UploadFile = File(...)):
     if not file.filename.endswith(('.csv', '.xlsx')):
         raise HTTPException(status_code=400, detail="Formato inválido. Envie um arquivo .csv ou .xlsx.")
